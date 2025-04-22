@@ -478,3 +478,54 @@ GROUP BY
   END;
 ```
 
+# Relationships
+
+```sql
+CREATE DATABASE store_db;
+/c storedb;
+```
+
+create tables
+
+```sql
+CREATE TABLE customers (  
+  cust_id SERIAL PRIMARY KEY, 
+  cust_name VARCHAR(100) NOT NULL 
+);
+
+CREATE TABLE orders ( 
+  ord_id SERIAL PRIMARY KEY, 
+  ord_date DATE NOT NULL, 
+  price NUMERIC NOT NULL,
+  cust_id INTEGER NOT NULL, 
+  FOREIGN KEY (cust_id) REFERENCES 
+  customers (cust_id) 
+);
+
+INSERT INTO customers (cust_name)
+VALUES 
+    ('Raju'), ('Sham'), ('Paul'), ('Alex');
+```
+
+# Joins
+
+```sql
+-- inner join
+SELECT cust_name FROM Customers c
+INNER JOIN Orders o
+on o.cust_id = c.cust_id
+GROUP BY cust_name;
+
+-- left join
+SELECT cust_name FROM Customers c
+LEFT JOIN Orders o
+on o.cust_id = c.cust_id
+GROUP BY cust_name;
+
+-- right join
+SELECT cust_name FROM Customers c
+RIGHT JOIN Orders o
+on o.cust_id = c.cust_id
+GROUP BY cust_name;
+```
+
