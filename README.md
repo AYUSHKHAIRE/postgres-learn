@@ -420,5 +420,61 @@ SET DEFAULT 'unknown';
 ALTER TABLE person
 ALTER COLUMN fname
 DROP DEFAULT ;
+
+-- check condidions
+ALTER TABLE person
+ADD COLUMN
+mob varchar(15)
+CHECK( LENGTH ( mob ) > 10 );
+
+-- name a constraint
+CREATE TABLE contacts1(
+  name varchar(50),
+  mob VARCHAR(15) UNIQUE,
+  CONSTRAINT mob_no_less_than_10_digits CHECK ( LENGTH ( MOB ) > 10 );
+)
+```
+
+Special cases
+
+```sql
+SELECT fname, salary,
+  CASE 
+    WHEN salary > 50000 THEN 'high' 
+    ELSE 'low'
+  END AS sal_cat
+FROM employee;
+
+SELECT fname, salary,
+  CASE 
+    WHEN salary > 50000 THEN 'high'
+    WHEN salary > 30000 THEN 'mid'
+    ELSE 'low'
+  END AS sal_cat
+FROM employee;
+
+-- task : calculate bonus as 10 % of salary
+SELECT fname, salary,
+  CASE 
+    WHEN salary > 0 THEN ROUND( salary / 10 )
+    ELSE 0
+  END AS sal_bonus
+FROM employee;
+
+-- task : tell number of emplyees taking salary ranges
+SELECT 
+  CASE 
+    WHEN salary > 50000 THEN 'high'
+    WHEN salary > 30000 THEN 'mid'
+    ELSE 'low'
+  END AS sal_cat,
+  COUNT(*) AS total_employees_in_salary_category
+FROM employee
+GROUP BY 
+  CASE 
+    WHEN salary > 50000 THEN 'high'
+    WHEN salary > 30000 THEN 'mid'
+    ELSE 'low'
+  END;
 ```
 
